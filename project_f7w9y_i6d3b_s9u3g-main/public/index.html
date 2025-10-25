@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- This meta tag ensures that the website renders correctly across different device sizes, enhancing mobile responsiveness. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Link to the external CSS stylesheet. Uncomment if you wish to customize or add styling. -->
+    <link rel="stylesheet" href="styles.css">
+
+    <title>Pokemon Database Project</title>
+</head>
+<body>
+    <!-- ===================================================================================== -->
+    <!-- Display the current status of the database connection. 
+         !!HERE TO HELP U DEBUGGING, NOT REQUIRED IN YOUR OWN PROJECT!!
+         -->
+    <h1>Database Connection Status: 
+        <!-- An in-line placeholder to display connection status. -->
+        <span id="dbStatus"> </span>
+        <!-- A loading GIF, will be hided once get the status. -->
+        <img id="loadingGif" class="loading-gif" src="loading_100px.gif" alt="Loading...">
+    </h1>
+
+    <br><hr><br> <!-- ========================================================================= -->
+    <div id="loadMessage"></div>
+    <p>Press this button to reset the database. Run this before any functions, in case of duplicates!</p>
+    <button onclick="resetDatabase()">Reset Database</button>
+    <br><br>
+    <div id="resetMessage"></div>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <h2>Show Pokemon</h2>
+    <p>Display all registered Pokemon</p>
+    <button onclick="showPkmnTable()"">Show/Hide Table</button>
+    <br><br>
+    <table id="pokemonTable" border="1">
+        <thead>
+            <tr>
+                <!--Table head, need to be adjusted accordingly to align with your own.-->
+                <th>PokemonID</th>
+                <th>PokemonName</th>
+                <th>IVs</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <h2> Insert a New Pokemon here! </h2>
+    <p> Enter the Pokemon's name, ID (PokeDex number) and individual values (IVs). </p>
+    <label><b>Pokemon/Pokedex ID:</b><input type="number" id="newPokemonID" /></label><br>
+    <label><b>Name:</b><input type="text" id="newPokemonName" /></label><br>
+
+    <label><b>IVs:</b></label>
+    HP: <select id="iv1"></select>
+    Atk: <select id="iv2"></select>
+    Def: <select id="iv3"></select>
+    Sp. Atk: <select id="iv4"></select>
+    Sp. Def: <select id="iv5"></select>
+    Speed: <select id="iv6"></select>
+    <br>
+
+    <p> If the Pokemon you are adding is new, ensure you add the base stats!</p>
+    <label><b>Base Stats:</b></label><br>
+    HP: <input type="number" id="baseStat1" min="1" max="255"><br>
+    Atk: <input type="number" id="baseStat2" min="1" max="255"><br>
+    Def: <input type="number" id="baseStat3" min="1" max="255"><br>
+    Sp. Atk: <input type="number" id="baseStat4" min="1" max="255"><br>
+    Sp. Def: <input type="number" id="baseStat5" min="1" max="255"><br>
+    Speed: <input type="number" id="baseStat6" min="1" max="255"><br>
+
+    <button id="insertPokemonButton">Insert Pokémon</button>
+
+    <div id="pokemonInsertResultMsg" style="margin-top: 10px; color: red;"></div>
+
+    <br><hr><br>
+    <h2>Update Gym Info</h2>
+    <p>Enter the corresponding GymID and then the new city, gym leader (NPC) and type!</p>
+    <label><b>Gym ID:</b><input type="number" id="gymID"></label><br>
+    <label><b>New city (City Name):</b><input type="text" id="newCityName"></label><br>
+    <label><b>New gym leader (NPCID):</b><input type="number" id="newNPCID"></label><br>
+    <label for="newTypeID"><b>Gym Type:</b></label>
+    <select id="newTypeID">
+        <option value="1">Normal</option>
+        <option value="2">Fire</option>
+        <option value="3">Water</option>
+        <option value="4">Electric</option>
+        <option value="5">Grass</option>
+        <option value="6">Ice</option>
+        <option value="7">Fighting</option>
+        <option value="8">Poison</option>
+        <option value="9">Ground</option>
+        <option value="10">Flying</option>
+        <option value="11">Psychic</option>
+        <option value="12">Bug</option>
+        <option value="13">Rock</option>
+        <option value="14">Ghost</option>
+        <option value="15">Dragon</option>
+        <option value="16">Dark</option>
+        <option value="17">Steel</option>
+        <option value="18">Fairy</option>
+    </select><br>
+
+    <button onclick="updateGym()">Update Gym</button>
+    <div id="updateGymResultMsg", style="margin-top: 10px; color: red;"></div>
+
+    <br><hr><br>
+    <h2>Delete a Move</h2>
+    <p>Select a MoveID to delete from the database.</p>
+    <label>Move ID: <input type="number" id="deleteMoveID"></label><br>
+
+    <button onclick="deleteMove()">Delete Move</button>
+    <div id="deleteMoveResultMsg", style="margin-top: 10px; color: red;"></div>
+
+    <br><hr><br>
+    <h2>Filter All Moves</h2>
+    <p>Filter by a specific type and accuracy threshold (inclusive).</p>
+    <label for="accuracyThreshold">Minimum Accuracy: </label>
+    <input type="number" id="accuracyThreshold" min="0" max="100" value="80"><br>
+    <label for="typeSelect">Move Type:</label>
+    <select id = "typeSelect">
+        <option value="1">Normal</option>
+        <option value="2">Fire</option>
+        <option value="3">Water</option>
+        <option value="4">Electric</option>
+        <option value="5">Grass</option>
+        <option value="6">Ice</option>
+        <option value="7">Fighting</option>
+        <option value="8">Poison</option>
+        <option value="9">Ground</option>
+        <option value="10">Flying</option>
+        <option value="11">Psychic</option>
+        <option value="12">Bug</option>
+        <option value="13">Rock</option>
+        <option value="14">Ghost</option>
+        <option value="15">Dragon</option>
+        <option value="16">Dark</option>
+        <option value="17">Steel</option>
+        <option value="18">Fairy</option>
+    </select><br>
+
+    <button onclick="obtainMoves()">Search</button>
+    <div id="obtainedMovesMsg"></div>
+    <table id="moveResultsTable" style="margin-top: 10px">
+        <thead>
+        <tr>
+            <th>Move</th>
+            <th>Accuracy</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <br><hr><br>
+    <h2>Show Pokémon Info</h2>
+    <p>Select columns to display:</p>
+    <label><input type="checkbox" name="columns" value="PokemonID" checked> Pokemon ID</label>
+    <label><input type="checkbox" name="columns" value="PokemonName" checked> Name</label>
+    <label><input type="checkbox" name="columns" value="IVs" checked> IVs</label><br><br>
+
+    <div class="ShowHide">
+        <button onclick="getProjectedPokemon()">Show</button>
+        <button onclick="hideProjectedPokemon()">Hide</button>
+    </div>
+    
+    <div id="projectionMessage"></div>
+
+    <table id="projectionTable" border="1" style="margin-top: 10px; display:none;">
+        <thead><tr id="projectionHeader"></tr></thead>
+        <tbody id="projectionBody"></tbody>
+    </table>
+
+    <br><hr><br>
+    <h2>Pokemon and Their Type(s)!</h2>
+    <p>Select the type you want to display!</p>
+    <label for="pokemonTypeSelect">Pokemon Type:</label>
+    <select id = "pokemonTypeSelect">
+        <option value="1">Normal</option>
+        <option value="2">Fire</option>
+        <option value="3">Water</option>
+        <option value="4">Electric</option>
+        <option value="5">Grass</option>
+        <option value="6">Ice</option>
+        <option value="7">Fighting</option>
+        <option value="8">Poison</option>
+        <option value="9">Ground</option>
+        <option value="10">Flying</option>
+        <option value="11">Psychic</option>
+        <option value="12">Bug</option>
+        <option value="13">Rock</option>
+        <option value="14">Ghost</option>
+        <option value="15">Dragon</option>
+        <option value="16">Dark</option>
+        <option value="17">Steel</option>
+        <option value="18">Fairy</option>
+    </select><br>
+    <br>
+    <div class="ShowHide">
+        <button onclick="getPokemonType()">Show Pokemon With Type</button>
+        <button onclick="hidePokemonType()">Hide Pokemon With Type</button>
+    </div>
+    
+    <div id="pokemonTypeMessage"></div>
+
+    <table id="pokemonTypeTable" border="1" style="margin-top: 10px; display:none;">
+        <thead>
+        <tr>
+            <th>Pokemon Name</th>
+            <th>Type</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <br><hr><br>
+    <h2>Pokemon Count By Each Type!</h2>
+    <p>Note that Pokemon with dual typing are counted under both types!</p>
+    
+    <div class="ShowHide">
+        <button onclick="getPokemonCountByType()">Show Number of Pokemon With Type</button>
+        <button onclick="hidePokemonCountByType()">Hide Number of Pokemon With Type</button>
+    </div>
+
+    <div id="pokemonTypeCountMessage"></div>
+
+    <table id="pokemonTypeCountTable" border="1" style="margin-top: 10px; display:none;">
+        <thead>
+        <tr>
+            <th>Type</th>
+            <th>Number of Pokemon</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <br><hr><br>
+
+    <h2>Show moves with less than 90 accuracy, sorted by ascending accuracy.</h2>
+    <button onclick="showAggHavingTable()"">Show/Hide Table</button>
+    <br><br>
+    <table id="aggregationHavingTable" border="1">
+        <thead>
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>MoveName</th>
+            <th>Accuracy</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <h2>Get Type with Max Pokemon Count</h2>
+    <button onclick="showAggNestedTable()"">Show/Hide Table</button>
+    <br><br>
+    <table id="aggregationNestedTable" border="1">
+        <thead>
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>TypeName</th>
+            <th>TypeCount</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <h2>Show NPC Holding All Items</h2>
+    <button onclick="showDivSQLTable()"">Show/Hide Table</button>
+    <br><br>
+    <table id="divSQLTable" border="1">
+        <thead>
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>NPCID</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <!-- ===================================================================================== -->
+    <!-- External JavaScript file that contains the functionality/logic for the operations above. -->
+    <script src="scripts.js"></script>
+    <script>
+        checkDbConnection();
+        populateIVDropdowns();
+    </script>
+</body>
+</html>
